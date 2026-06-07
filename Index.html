@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Morning Ride · County Meath · Jun 7, 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0c0f;
+    --surface: #111318;
+    --surface2: #181c22;
+    --border: #1e2530;
+    --accent: #e8f045;
+    --accent2: #f0a045;
+    --accent3: #45c8f0;
+    --text: #e8eaf0;
+    --muted: #6b7280;
+    --red: #f04560;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 0 60px 0;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, #0a1a0a 0%, #0a0c14 40%, #0f0a1a 100%);
+  }
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 60px 60px;
+    opacity: 0.4;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 0%, transparent 100%);
+  }
+  .hero-glow {
+    position: absolute; top: -20%; left: 30%;
+    width: 800px; height: 600px;
+    background: radial-gradient(ellipse, rgba(232,240,69,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-content {
+    position: relative; z-index: 2;
+    max-width: 1200px; margin: 0 auto; padding: 0 40px;
+    width: 100%;
+  }
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 20px;
+    opacity: 0; animation: fadeUp 0.8s 0.2s forwards;
+  }
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(72px, 12vw, 160px);
+    line-height: 0.92;
+    letter-spacing: 0.02em;
+    color: var(--text);
+    opacity: 0; animation: fadeUp 0.8s 0.4s forwards;
+  }
+  .hero-title span { color: var(--accent); }
+  .hero-subtitle {
+    font-size: 16px; color: var(--muted); margin-top: 24px;
+    opacity: 0; animation: fadeUp 0.8s 0.6s forwards;
+  }
+  .hero-stats-row {
+    display: flex; gap: 40px; margin-top: 48px; flex-wrap: wrap;
+    opacity: 0; animation: fadeUp 0.8s 0.8s forwards;
+  }
+  .hero-stat { display: flex; flex-direction: column; gap: 4px; }
+  .hero-stat-val {
+    font-family: 'Bebas Neue', sans-serif; font-size: 36px; color: var(--accent);
+    line-height: 1;
+  }
+  .hero-stat-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); }
+
+  /* SECTION LAYOUT */
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 40px; }
+  .section { padding: 80px 0; border-top: 1px solid var(--border); }
+  .section-label {
+    font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.3em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 12px;
+  }
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif; font-size: 56px; line-height: 1;
+    margin-bottom: 40px; color: var(--text);
+  }
+
+  /* POWER CHART */
+  .power-grid {
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin-bottom: 48px;
+  }
+  .power-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 4px; padding: 24px 20px;
+    position: relative; overflow: hidden;
+    transition: transform 0.2s, border-color 0.2s;
+  }
+  .power-card:hover { transform: translateY(-4px); border-color: var(--accent); }
+  .power-card::after {
+    content: '';
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 3px; background: var(--accent);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.4s ease;
+  }
+  .power-card:hover::after { transform: scaleX(1); }
+  .power-duration {
+    font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 12px;
+  }
+  .power-watts {
+    font-family: 'Bebas Neue', sans-serif; font-size: 52px; line-height: 1;
+    color: var(--accent);
+  }
+  .power-unit { font-size: 18px; color: var(--muted); }
+  .power-hr {
+    margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .hr-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--red); }
+  .power-hr-val {
+    font-family: 'DM Mono', monospace; font-size: 14px; color: var(--text);
+  }
+  .power-hr-label { font-size: 12px; color: var(--muted); }
+  .power-bar-wrap { margin-top: 14px; }
+  .power-bar-bg { height: 4px; background: var(--border); border-radius: 2px; }
+  .power-bar-fill { height: 100%; border-radius: 2px; background: linear-gradient(90deg, var(--accent), var(--accent2)); transition: width 1.2s ease; }
+
+  /* BAR CHART */
+  .chart-wrap {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 4px;
+    padding: 32px; position: relative; overflow: hidden;
+  }
+  .chart-title { font-size: 13px; color: var(--muted); margin-bottom: 24px; font-family: 'DM Mono', monospace; letter-spacing: 0.1em; }
+  .bar-chart { display: flex; align-items: flex-end; gap: 12px; height: 180px; }
+  .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .bar-val { font-family: 'Bebas Neue', sans-serif; font-size: 20px; color: var(--accent); }
+  .bar-body {
+    width: 100%; border-radius: 2px 2px 0 0;
+    background: linear-gradient(180deg, var(--accent) 0%, rgba(232,240,69,0.3) 100%);
+    transition: height 1.2s ease;
+  }
+  .bar-label { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); text-transform: uppercase; }
+
+  /* MAP */
+  .map-container {
+    width: 100%; border-radius: 4px; overflow: hidden;
+    border: 1px solid var(--border); position: relative;
+  }
+  #map { height: 520px; }
+
+  /* PERFORMANCE METRICS */
+  .metrics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); margin-bottom: 40px; }
+  .metric-cell { background: var(--surface); padding: 28px 24px; }
+  .metric-val { font-family: 'Bebas Neue', sans-serif; font-size: 42px; line-height: 1; }
+  .metric-val.yellow { color: var(--accent); }
+  .metric-val.blue { color: var(--accent3); }
+  .metric-val.orange { color: var(--accent2); }
+  .metric-val.red { color: var(--red); }
+  .metric-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-top: 4px; }
+
+  /* COACHING */
+  .coaching-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .coaching-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 4px;
+    padding: 32px; position: relative; overflow: hidden;
+  }
+  .coaching-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  }
+  .coaching-card.strength::before { background: var(--accent); }
+  .coaching-card.focus::before { background: var(--accent3); }
+  .coaching-card.recovery::before { background: var(--accent2); }
+  .coaching-card.target::before { background: var(--red); }
+  .coaching-icon { font-size: 28px; margin-bottom: 16px; }
+  .coaching-heading { font-family: 'Bebas Neue', sans-serif; font-size: 24px; margin-bottom: 12px; }
+  .coaching-text { font-size: 14px; color: var(--muted); line-height: 1.8; }
+  .coaching-tag {
+    display: inline-block; margin-top: 16px;
+    font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.15em;
+    text-transform: uppercase; padding: 4px 10px;
+    border-radius: 2px;
+  }
+  .strength .coaching-tag { background: rgba(232,240,69,0.1); color: var(--accent); }
+  .focus .coaching-tag { background: rgba(69,200,240,0.1); color: var(--accent3); }
+  .recovery .coaching-tag { background: rgba(240,160,69,0.1); color: var(--accent2); }
+  .target .coaching-tag { background: rgba(240,69,96,0.1); color: var(--red); }
+
+  /* SEGMENTS */
+  .segments-table { width: 100%; border-collapse: collapse; }
+  .segments-table th {
+    font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--muted); text-align: left;
+    padding: 12px 16px; border-bottom: 1px solid var(--border);
+  }
+  .segments-table td {
+    padding: 16px; border-bottom: 1px solid var(--border);
+    font-size: 13px; vertical-align: middle;
+  }
+  .segments-table tr:hover td { background: var(--surface2); }
+  .seg-name { font-weight: 500; }
+  .seg-watts { font-family: 'DM Mono', monospace; color: var(--accent); font-weight: 500; }
+  .seg-hr { font-family: 'DM Mono', monospace; color: var(--red); }
+  .seg-time { font-family: 'DM Mono', monospace; color: var(--muted); }
+
+  /* PHOTOS */
+  .photos-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .photo-card { border-radius: 4px; overflow: hidden; position: relative; aspect-ratio: 4/3; }
+  .photo-card img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(0.8) contrast(1.1); transition: filter 0.3s, transform 0.4s; }
+  .photo-card:hover img { filter: saturate(1) contrast(1); transform: scale(1.05); }
+  .photo-caption {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 24px 16px 16px;
+    background: linear-gradient(transparent, rgba(0,0,0,0.85));
+    font-size: 12px; color: rgba(255,255,255,0.9);
+    font-family: 'DM Mono', monospace; letter-spacing: 0.05em;
+  }
+
+  /* BEST EFFORTS */
+  .efforts-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .effort-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 4px; padding: 20px 16px; text-align: center;
+  }
+  .effort-dist { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--accent3); }
+  .effort-time { font-family: 'DM Mono', monospace; font-size: 18px; margin: 4px 0; }
+  .effort-speed { font-size: 12px; color: var(--muted); }
+
+  /* ALTITUDE CHART */
+  .altitude-svg { width: 100%; }
+
+  /* FOOTER */
+  footer {
+    text-align: center; padding: 40px;
+    font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted);
+    border-top: 1px solid var(--border); letter-spacing: 0.1em;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 768px) {
+    .power-grid { grid-template-columns: repeat(2, 1fr); }
+    .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+    .coaching-grid { grid-template-columns: 1fr; }
+    .photos-grid { grid-template-columns: 1fr; }
+    .efforts-grid { grid-template-columns: repeat(2, 1fr); }
+    .container { padding: 0 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">☁ Strava Activity Report · Sunday, 7 June 2026 · County Meath, Ireland</div>
+    <h1 class="hero-title">MORNING<br><span>RIDE</span></h1>
+    <p class="hero-subtitle">Dunshaughlin · Summerhill · Trim · Dunsany · 63.5 km · 326 m elevation</p>
+    <div class="hero-stats-row">
+      <div class="hero-stat">
+        <span class="hero-stat-val">63.5</span>
+        <span class="hero-stat-label">km distance</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-val">1:57</span>
+        <span class="hero-stat-label">moving time</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-val">326</span>
+        <span class="hero-stat-label">m elevation</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-val">155</span>
+        <span class="hero-stat-label">avg watts</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-val">124</span>
+        <span class="hero-stat-label">avg bpm</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-val">5</span>
+        <span class="hero-stat-label">new PRs</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- POWER BESTS -->
+<section class="section">
+  <div class="container">
+    <div class="section-label">⚡ Power Analysis</div>
+    <h2 class="section-title">BEST POWER MINUTES</h2>
+    <div class="power-grid" id="powerGrid"></div>
+
+    <!-- Bar chart -->
+    <div class="chart-wrap">
+      <div class="chart-title">PEAK POWER CURVE (W) — 1 MIN TO 5 MIN</div>
+      <div class="bar-chart" id="barChart"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ELEVATION PROFILE -->
+<section class="section">
+  <div class="container">
+    <div class="section-label">⛰ Elevation Profile</div>
+    <h2 class="section-title">TERRAIN OVERVIEW</h2>
+    <div class="chart-wrap">
+      <div class="chart-title">ALTITUDE (m) OVER DISTANCE (km)</div>
+      <svg class="altitude-svg" id="altitudeSvg" height="200" viewBox="0 0 1120 200" preserveAspectRatio="none"></svg>
+    </div>
+  </div>
+</section>
+
+<!-- MAP -->
+<section class="section">
+  <div class="container">
+    <div class="section-label">🗺 Route Map</div>
+    <h2 class="section-title">RIDE TRACE</h2>
+    <div class="map-container">
+      <div id="map"></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- KEY METRICS -->
+<section class="section">
+  <div class="container">
+    <div class="section-label">📊 Performance Metrics</div>
+    <h2 class="section-title">BY THE NUMBERS</h2>
+    <div class="metrics-grid">
+      <div class="metric-cell">
+        <div class="metric-val yellow">154.8</div>
+        <div class="metric-label">Avg Power (W)</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-val red">123.6</div>
+        <div class="metric-label">Avg Heart Rate (bpm)</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-val blue">154</div>
+        <div class="metric-label">Max Heart Rate (bpm)</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-val orange">72.7</div>
+        <div class="metric-label">Avg Cadence (rpm)</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-val yellow">32.5</div>
+        <div class="metric-label">Avg Speed (km/h)</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-val red">55.2</div>
+        <div class="metric-label">Max Speed (km/h)</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-val blue">1082</div>
+        <div class="metric-label">Calories (kcal)</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-val orange">72</div>
+        <div class="metric-label">Relative Effort</div>
+      </div>
+    </div>
+
+    <!-- Best Efforts -->
+    <div class="section-label" style="margin-top:40px">🏁 Best Efforts</div>
+    <div class="efforts-grid" style="margin-top:16px" id="effortsGrid"></div>
+  </div>
+</section>
+
+<!-- TOP SEGMENTS -->
+<section class="section">
+  <div class="container">
+    <div class="section-label">🏷 Segment Efforts</div>
+    <h2 class="section-title">TOP SEGMENTS</h2>
+    <div class="chart-wrap" style="padding:0; overflow-x:auto;">
+      <table class="segments-table" id="segmentsTable">
+        <thead>
+          <tr>
+            <th>Segment</th>
+            <th>Distance</th>
+            <th>Time</th>
+            <th>Avg Power</th>
+            <th>Avg HR</th>
+            <th>Elev Gain</th>
+          </tr>
+        </thead>
+        <tbody id="segmentsBody"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- COACHING -->
+<section class="section">
+  <div class="container">
+    <div class="section-label">🎯 AI Coaching Insights</div>
+    <h2 class="section-title">RECOMMENDATIONS</h2>
+    <div class="coaching-grid">
+      <div class="coaching-card strength">
+        <div class="coaching-icon">⚡</div>
+        <div class="coaching-heading">Neuromuscular Strength</div>
+        <div class="coaching-text">Your 5-second peak of 349W and 1-minute best of 280W reveal a powerful neuromuscular system. The "Rocky Road to Dunshaughlin" segment at 268W avg confirms you can produce high force over short punchy efforts. Continue integrating sprint intervals (6–10s max efforts) twice per week to maintain this capacity as you build volume.</div>
+        <span class="coaching-tag">Strength</span>
+      </div>
+      <div class="coaching-card focus">
+        <div class="coaching-icon">📉</div>
+        <div class="coaching-heading">Power Endurance Drop-Off</div>
+        <div class="coaching-text">The drop from 280W (1 min) to 226W (5 min) represents a 19% decline — slightly steeper than ideal, suggesting your VO₂max engine could use development. Add 3×5 min intervals at 220–230W (Zone 5) with 5 min recovery, once weekly. This will compress the drop-off and lift your 5-min and 8-min numbers significantly.</div>
+        <span class="coaching-tag">VO₂Max Development</span>
+      </div>
+      <div class="coaching-card recovery">
+        <div class="coaching-icon">❤️</div>
+        <div class="coaching-heading">Heart Rate Efficiency</div>
+        <div class="coaching-text">Your avg HR of 124 bpm for 155W avg suggests good aerobic efficiency — you're working at roughly Zone 2–3 for the bulk of the ride. The max of 154 bpm was only reached briefly. Consider adding one dedicated low-intensity day (HR &lt; 115 bpm) to promote cardiac adaptations and reduce cumulative fatigue. You're logging high-frequency training; recovery quality is key.</div>
+        <span class="coaching-tag">Cardiac Efficiency</span>
+      </div>
+      <div class="coaching-card target">
+        <div class="coaching-icon">🎯</div>
+        <div class="coaching-heading">Cadence Optimisation</div>
+        <div class="coaching-text">Your avg cadence of 72.7 rpm is solid but slightly below the 80–90 rpm range optimal for power transmission and joint health. Several segment efforts dropped to 59–65 rpm on climbs (Breemount Drag, Summerhill Killer), indicating you're pushing big gears under fatigue. Work on climbing in higher cadences — gear down earlier and target 75+ rpm on all ascents.</div>
+        <span class="coaching-tag">Technique</span>
+      </div>
+      <div class="coaching-card strength" style="grid-column: span 1;">
+        <div class="coaching-icon">🏆</div>
+        <div class="coaching-heading">PR Performance</div>
+        <div class="coaching-text">Five new personal records today — including silver-rank efforts on Summerhill Road and Robinstown — show you're in excellent form heading into summer. Your fitness is trending upward. Maintain this weekly volume (60–70 km rides) while adding one structured interval session to convert good form into peak performance.</div>
+        <span class="coaching-tag">Form Peak</span>
+      </div>
+      <div class="coaching-card focus" style="grid-column: span 1;">
+        <div class="coaching-icon">📆</div>
+        <div class="coaching-heading">Training Load & Freshness</div>
+        <div class="coaching-text">You've ridden 7 of the last 7 days with significant volume. Your relative effort of 72 today is moderate, but cumulative fatigue may be building. Consider a rest or active recovery day this week (easy spin &lt; 45 min), or you risk blunting the gains from this excellent block of training. Adaptation happens during rest.</div>
+        <span class="coaching-tag">Load Management</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Generated from Strava activity #18820634253 · Morning Ride · 7 June 2026 · County Meath, Ireland</p>
+  <p style="margin-top:8px; opacity:0.5">Data sourced directly from Strava performance streams</p>
+</footer>
+
+<!-- Leaflet Map -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+// =========================================================
+// DATA
+// =========================================================
+const powerBests = [
+  { min: 1, watts: 280, hr: 148 },
+  { min: 2, watts: 252, hr: 146 },
+  { min: 3, watts: 247, hr: 143 },
+  { min: 4, watts: 236, hr: 141 },
+  { min: 5, watts: 226, hr: 138 },
+];
+
+const segments = [
+  { name: "Rocky Road to Dunshaughlin", dist: 0.99, time: 96, watts: 268.6, hr: 144.7, elev: 11.5 },
+  { name: "Summerhill Road", dist: 3.74, time: 456, watts: 166.9, hr: 133.6, elev: 46.2 },
+  { name: "Barstown", dist: 4.06, time: 389, watts: 189.4, hr: 136.0, elev: 9.0 },
+  { name: "Trim Roundabouts 1→2", dist: 0.86, time: 101, watts: 207.4, hr: 136.4, elev: 2.9 },
+  { name: "Mullagh Drag", dist: 2.23, time: 287, watts: 187.7, hr: 134.7, elev: 32.6 },
+  { name: "Warm Up", dist: 2.45, time: 249, watts: 210.6, hr: 143.8, elev: 9.2 },
+  { name: "R156 Climb", dist: 1.00, time: 133, watts: 198.2, hr: 134.1, elev: 0 },
+  { name: "Drag in to Dunshaughlin", dist: 1.95, time: 190, watts: 204.4, hr: 135.5, elev: 19.2 },
+  { name: "Mullagh Hill East", dist: 0.72, time: 105, watts: 201.0, hr: 135.5, elev: 24.0 },
+  { name: "Cannistown to Trim", dist: 6.65, time: 786, watts: 167.8, hr: 127.5, elev: 22.0 },
+];
+
+const bestEfforts = [
+  { label: "5 Mile", secs: 754 },
+  { label: "10 km", secs: 969 },
+  { label: "10 Mile", secs: 1643 },
+  { label: "20 km", secs: 2064 },
+  { label: "30 km", secs: 3305 },
+  { label: "40 km", secs: 4485 },
+  { label: "50 km", secs: 5561 },
+  { label: "63.5 km", secs: 7027 },
+];
+
+const coords = [[53.516388,-6.554187],[53.516659,-6.555852],[53.51709,-6.557571],[53.517414,-6.559491],[53.517944,-6.561196],[53.51865,-6.562716],[53.519527,-6.563985],[53.520363,-6.565096],[53.521271,-6.566311],[53.522133,-6.567632],[53.522964,-6.568824],[53.523663,-6.570323],[53.524326,-6.572025],[53.524963,-6.573484],[53.525761,-6.574889],[53.526608,-6.576228],[53.527531,-6.577186],[53.52845,-6.578337],[53.528477,-6.580081],[53.528171,-6.582039],[53.527855,-6.583907],[53.527561,-6.585628],[53.527245,-6.587509],[53.527111,-6.589424],[53.52747,-6.591293],[53.527878,-6.593071],[53.52842,-6.594728],[53.529171,-6.596154],[53.529919,-6.597535],[53.530708,-6.598938],[53.531494,-6.600394],[53.532284,-6.60184],[53.533024,-6.603241],[53.53376,-6.604666],[53.534534,-6.606055],[53.535393,-6.607308],[53.536259,-6.60857],[53.536827,-6.610201],[53.536968,-6.61213],[53.537178,-6.614013],[53.537571,-6.615802],[53.538399,-6.617104],[53.539307,-6.618277],[53.540207,-6.61941],[53.541069,-6.620614],[53.541931,-6.621087],[53.542885,-6.622168],[53.543869,-6.623061],[53.544777,-6.624216],[53.5457,-6.625323],[53.546589,-6.626526],[53.547318,-6.628011],[53.548054,-6.629409],[53.548725,-6.630788],[53.549671,-6.631813],[53.550705,-6.632535],[53.551765,-6.633356],[53.552799,-6.634155],[53.553291,-6.635683],[53.553421,-6.637582],[53.553554,-6.63949],[53.553715,-6.64136],[53.5541,-6.643187],[53.554455,-6.644918],[53.555157,-6.646586],[53.555969,-6.647988],[53.556763,-6.649152],[53.557472,-6.650806],[53.557579,-6.652541],[53.557873,-6.654444],[53.558506,-6.656081],[53.559086,-6.657637],[53.558914,-6.659403],[53.559776,-6.660611],[53.560619,-6.661797],[53.561512,-6.66319],[53.562279,-6.664521],[53.562992,-6.666041],[53.563236,-6.667927],[53.563221,-6.669841],[53.563309,-6.671712],[53.563763,-6.673435],[53.564075,-6.675178],[53.564564,-6.676949],[53.565113,-6.678586],[53.566021,-6.679863],[53.566807,-6.681203],[53.567474,-6.682658],[53.567905,-6.684496],[53.568565,-6.686059],[53.569305,-6.687459],[53.570133,-6.688674],[53.571266,-6.689228],[53.571953,-6.690547],[53.572617,-6.692166],[53.573605,-6.692537],[53.574821,-6.692608],[53.575897,-6.693209],[53.576958,-6.693926],[53.577908,-6.694778],[53.578808,-6.695927],[53.579811,-6.696914],[53.580204,-6.698674],[53.580639,-6.700414],[53.581299,-6.702038],[53.581875,-6.703705],[53.582767,-6.704937],[53.583759,-6.705794],[53.584835,-6.706642],[53.585422,-6.708123],[53.585426,-6.70993],[53.586189,-6.710345],[53.586906,-6.711518],[53.587536,-6.713099],[53.588188,-6.714709],[53.588936,-6.716167],[53.589695,-6.717589],[53.590534,-6.718915],[53.591392,-6.720172],[53.592251,-6.721501],[53.593117,-6.72274],[53.593742,-6.724199],[53.594402,-6.725791],[53.594597,-6.727712],[53.595154,-6.729283],[53.595737,-6.730948],[53.59626,-6.732728],[53.59679,-6.734393],[53.597363,-6.736073],[53.598003,-6.737552],[53.598682,-6.739138],[53.599373,-6.740662],[53.60025,-6.741966],[53.601143,-6.743139],[53.602089,-6.744263],[53.602978,-6.745482],[53.603859,-6.746694],[53.604549,-6.748215],[53.604965,-6.7499],[53.605404,-6.751668],[53.605778,-6.753484],[53.605991,-6.755366],[53.606289,-6.757173],[53.606457,-6.759147],[53.606712,-6.760932],[53.606968,-6.762837],[53.607193,-6.764722],[53.607433,-6.766701],[53.607502,-6.768568],[53.607807,-6.770422],[53.607986,-6.772257],[53.607571,-6.773668],[53.606907,-6.774792],[53.607128,-6.776715],[53.607147,-6.778614],[53.607277,-6.780572],[53.607796,-6.782301],[53.608383,-6.783977],[53.609165,-6.785279],[53.609661,-6.786951],[53.61005,-6.788754],[53.610668,-6.790343],[53.611183,-6.792122],[53.611504,-6.793887],[53.611328,-6.795827],[53.611103,-6.797731],[53.611134,-6.799666],[53.611275,-6.801526],[53.611568,-6.803327],[53.611889,-6.80521],[53.612194,-6.807061],[53.612324,-6.808961],[53.612782,-6.810683],[53.613358,-6.812407],[53.613892,-6.814039],[53.614338,-6.81582],[53.614098,-6.817166],[53.612946,-6.817361],[53.611797,-6.817584],[53.610683,-6.817797],[53.609516,-6.817909],[53.60841,-6.817742],[53.607254,-6.817572],[53.606083,-6.817662],[53.604965,-6.817812],[53.603828,-6.817964],[53.602707,-6.818103],[53.601597,-6.818281],[53.600536,-6.818878],[53.599403,-6.819001],[53.598232,-6.819141],[53.597111,-6.819284],[53.595974,-6.819581],[53.594829,-6.819807],[53.593723,-6.819816],[53.592552,-6.819802],[53.591392,-6.819786],[53.590305,-6.819771],[53.589165,-6.819677],[53.588005,-6.819518],[53.586884,-6.819379],[53.586102,-6.817996],[53.585495,-6.816379],[53.584816,-6.814845],[53.583897,-6.813681],[53.583324,-6.812124],[53.58305,-6.810204],[53.582409,-6.808568],[53.581779,-6.807055],[53.581329,-6.805252],[53.58073,-6.803627],[53.579929,-6.802315],[53.578949,-6.801355],[53.578167,-6.800032],[53.577702,-6.798175],[53.576813,-6.79709],[53.575657,-6.797273],[53.57457,-6.797701],[53.573528,-6.797013],[53.572624,-6.795937],[53.571789,-6.794595],[53.571056,-6.793148],[53.570061,-6.792449],[53.56897,-6.791633],[53.567989,-6.790663],[53.566902,-6.790108],[53.5658,-6.790203],[53.564644,-6.790029],[53.563469,-6.789949],[53.562405,-6.78966],[53.562172,-6.78776],[53.561584,-6.786097],[53.560715,-6.784921],[53.559643,-6.784135],[53.558708,-6.78322],[53.55769,-6.782383],[53.556553,-6.781831],[53.555462,-6.782184],[53.554531,-6.783392],[53.553707,-6.784636],[53.552872,-6.785891],[53.551918,-6.786909],[53.550751,-6.787197],[53.549587,-6.787203],[53.548557,-6.787809],[53.54781,-6.789273],[53.547459,-6.791068],[53.547398,-6.793031],[53.546791,-6.793167],[53.546101,-6.791737],[53.544979,-6.791152],[53.543865,-6.79079],[53.542759,-6.790428],[53.541618,-6.790092],[53.540493,-6.790229],[53.539375,-6.790503],[53.538235,-6.790178],[53.537224,-6.789483],[53.536102,-6.788694],[53.535057,-6.787962],[53.533981,-6.787234],[53.532917,-6.786928],[53.531715,-6.787],[53.530632,-6.786829],[53.529572,-6.785985],[53.528805,-6.78464],[53.528145,-6.783077],[53.527454,-6.781536],[53.52668,-6.780085],[53.525928,-6.778702],[53.525108,-6.777341],[53.52417,-6.776334],[53.523067,-6.775618],[53.522156,-6.774601],[53.521339,-6.773164],[53.520561,-6.77179],[53.519684,-6.770566],[53.518749,-6.769511],[53.517773,-6.768386],[53.516849,-6.767289],[53.516167,-6.765898],[53.515774,-6.764003],[53.515564,-6.762096],[53.515366,-6.760296],[53.515148,-6.758366],[53.514919,-6.756485],[53.514614,-6.754672],[53.514278,-6.752866],[53.513935,-6.750987],[53.513615,-6.749215],[53.51326,-6.747281],[53.512897,-6.745456],[53.512268,-6.743926],[53.51136,-6.742841],[53.510235,-6.742345],[53.50909,-6.742348],[53.507992,-6.742382],[53.506874,-6.742715],[53.505794,-6.743335],[53.504658,-6.743991],[53.503574,-6.744627],[53.50256,-6.745226],[53.501438,-6.745884],[53.5004,-6.746536],[53.49929,-6.747199],[53.498222,-6.747819],[53.497074,-6.74794],[53.495991,-6.747416],[53.49493,-6.746669],[53.493866,-6.745833],[53.492866,-6.74495],[53.491859,-6.744059],[53.490864,-6.743211],[53.489819,-6.742327],[53.488823,-6.741359],[53.487884,-6.740306],[53.486938,-6.739165],[53.486065,-6.738026],[53.485138,-6.736842],[53.484249,-6.735712],[53.483314,-6.734526],[53.482437,-6.733347],[53.481548,-6.732033],[53.480465,-6.731733],[53.480366,-6.729991],[53.480469,-6.728071],[53.480579,-6.726201],[53.480682,-6.724264],[53.480423,-6.72261],[53.479591,-6.721409],[53.479671,-6.719548],[53.479465,-6.717662],[53.479023,-6.715906],[53.478607,-6.714062],[53.478424,-6.712193],[53.478279,-6.710288],[53.478138,-6.708463],[53.478001,-6.706596],[53.477848,-6.70458],[53.477722,-6.702782],[53.477581,-6.700852],[53.477405,-6.698957],[53.477127,-6.697159],[53.476807,-6.695169],[53.476501,-6.693345],[53.476204,-6.691508],[53.47591,-6.68962],[53.475613,-6.687758],[53.475334,-6.686013],[53.475006,-6.68419],[53.47448,-6.682395],[53.473965,-6.68076],[53.473404,-6.679011],[53.472858,-6.677337],[53.472309,-6.675653],[53.471767,-6.67404],[53.471165,-6.672346],[53.470612,-6.670784],[53.469986,-6.669029],[53.469429,-6.667485],[53.468815,-6.665769],[53.468246,-6.664173],[53.467659,-6.662528],[53.467068,-6.660892],[53.466496,-6.659252],[53.465904,-6.65763],[53.465305,-6.655902],[53.464718,-6.654307],[53.463909,-6.65298],[53.463173,-6.651616],[53.462795,-6.649795],[53.462406,-6.648018],[53.462006,-6.646165],[53.46162,-6.644397],[53.461224,-6.642526],[53.460854,-6.640771],[53.460358,-6.639015],[53.459755,-6.637417],[53.45895,-6.636018],[53.458206,-6.634687],[53.457287,-6.633451],[53.456608,-6.63197],[53.455929,-6.630455],[53.455162,-6.62889],[53.454739,-6.627157],[53.45422,-6.625443],[53.453274,-6.624397],[53.452656,-6.622791],[53.451614,-6.622108],[53.450714,-6.621052],[53.450096,-6.619657],[53.451103,-6.618561],[53.4519,-6.617348],[53.452011,-6.615467],[53.452057,-6.613456],[53.452076,-6.611583],[53.452106,-6.609623],[53.451988,-6.607707],[53.451859,-6.605935],[53.451717,-6.604028],[53.451557,-6.602062],[53.451408,-6.600153],[53.451248,-6.598257],[53.451065,-6.596473],[53.450596,-6.594725],[53.450123,-6.592997],[53.449623,-6.591124],[53.449154,-6.589408],[53.448669,-6.587689],[53.448452,-6.585915],[53.448296,-6.583956],[53.448025,-6.582076],[53.447746,-6.580182],[53.447491,-6.578365],[53.44722,-6.576487],[53.446876,-6.574612],[53.446682,-6.572811],[53.446648,-6.570865],[53.446545,-6.56892],[53.44632,-6.56717],[53.445782,-6.56543],[53.444874,-6.564214],[53.444077,-6.562947],[53.444057,-6.56198],[53.445194,-6.561373],[53.446217,-6.560607],[53.44677,-6.559031],[53.447437,-6.557343],[53.44809,-6.555764],[53.448894,-6.554423],[53.449779,-6.553183],[53.450691,-6.552302],[53.451786,-6.551744],[53.452808,-6.550929],[53.45396,-6.550406],[53.45507,-6.550043],[53.456169,-6.550144],[53.457287,-6.549754],[53.458385,-6.550154],[53.459503,-6.55066],[53.460426,-6.549696],[53.461449,-6.548727],[53.462467,-6.547803],[53.463394,-6.546767],[53.464252,-6.545493],[53.464764,-6.543769],[53.465408,-6.542153],[53.466309,-6.541057],[53.467255,-6.540064],[53.468075,-6.538868],[53.469067,-6.537833],[53.470036,-6.537737],[53.470879,-6.538984],[53.471779,-6.540202],[53.472591,-6.538847],[53.473598,-6.538469],[53.474564,-6.539416],[53.475529,-6.540368],[53.476639,-6.539842],[53.477577,-6.538897],[53.478668,-6.538248],[53.47961,-6.538515],[53.480724,-6.538072],[53.481892,-6.537754],[53.483032,-6.537595],[53.484169,-6.537686],[53.485294,-6.537753],[53.48629,-6.536879],[53.487289,-6.53604],[53.488335,-6.535221],[53.489342,-6.534407],[53.490154,-6.532983],[53.490646,-6.531322],[53.491512,-6.529982],[53.492413,-6.528872],[53.493332,-6.52778],[53.4944,-6.527525],[53.49543,-6.527726],[53.496345,-6.528764],[53.497311,-6.529851],[53.498295,-6.530931],[53.499306,-6.531943],[53.50024,-6.532918],[53.501198,-6.533954],[53.502102,-6.535135],[53.502861,-6.536551],[53.503651,-6.538028],[53.504581,-6.539142],[53.505646,-6.539837],[53.506763,-6.540041],[53.507919,-6.540034],[53.509052,-6.539867],[53.510136,-6.539632],[53.510841,-6.540285],[53.510738,-6.542128],[53.510342,-6.543954],[53.510334,-6.545752],[53.510937,-6.547311],[53.511127,-6.549087],[53.511181,-6.551002]];
+
+const altitudes = [104.6,104.8,105.6,106,108.8,106.6,105.4,104.6,104,104.8,101.6,98.4,96,95.6,97.8,99,99.4,96,95.2,93.8,92.2,92,88.2,85.6,86.6,83,78.8,78,77.2,76.8,76,75.4,73.6,74.6,75.6,76,78.2,79.4,78.2,77.8,77.4,77.8,79.8,80.6,80.2,80.6,81.4,80,80.4,79.8,81.4,82.6,82.8,86.6,89.2,92.6,93.6,94.2,98.2,102.6,105.6,105.4,100.2,91.4,81.8,77.4,74.6,71.8,69.8,67.2,64.8,64,64.4,68.4,67.4,65.4,65,68.2,67.4,64.4,65,64.8,64.6,63.8,67.2,65,64.4,63.8,63.6,65.4,64.6,64,63.2,62.6,62.8,63,61.6,60.6,56.8,54.8,53.2,55.4,52.8,47.2,47.2,52.2,54.4,53.6,54.8,54.2,53.6,53.6,52.6,53.2,52,51.4,55,58.6,61.8,64.4,63.8,63.6,63.6,64.8,66.6,65.2,65.2,65.4,64.8,66.2,67.4,70.2,72,69.8,69.2,69.4,69.4,73.8,74.4,73.6,72.8,69.4,67.6,64.4,63.2,62.8,65,64.8,62.6,62.2,62.4,61,61.6,60.4,61.4,62,62.6,62.6,65.4,66.8,70.6,72.8,73.4,71.8,72,72.6,72.6,72,71.6,71.6,72.4,74,75.6,77,76.2,73.6,72.4,70.6,68,66.4,66.4,66.6,67.2,69.2,72.4,71.6,69,66.8,67.6,65.2,66,69.2,70.8,70,69.8,70.4,69.2,69.8,69.8,69,68.6,68.4,68.8,67.6,67,66,65.6,65.4,65,65.8,65.2,65,66.8,64,62.8,61.8,62.2,66.2,67.2,66.4,65.4,63.2,61,60.6,59.2,60.2,59,60.6,60.8,58,57.8,58.4,59,59.4,57.6,53.8,53.8,53.8,53,51,49.2,51.4,55.8,54.8,54.8,55.8,56.6,57.8,56.8,57.4,58.6,59.6,60.6,61.6,61.2,59.2,56,54.6,55.4,56.2,57.2,57.4,56.2,56.4,55.2,54.6,56.6,59.4,59,59.4,63.8,69.8,76.8,82.2,87.6,87.4,86,81.2,73.8,68.8,66.4,64.8,66,68.4,71.2,73,74,74.4,75.4,76,75.8,75.6,74.4,74.2,74.2,75.4,75.2,73,71.8,72,73.8,73.4,71.8,71,70.6,72.6,73.2,72.4,71.8,71.6,71.4,70.2,73.8,74.2,78,76.4,75.2,76.6,75.2,75.2,75.4,76.4,77,78,79.6,80,80.8,82.4,86.4,93,93.6,95.4,100,103.2,102.6,101.2,98.2,94.2,92,90.2,87,85,81.8,81,79.8,82.2,82.6,82.4,83.8,85,88.8,91.2,94.4,93,93.2,94.4,93.2,93.6,94.6,91.6,90.4,89.4,90.2,90.2,90.4,91.6,93,94.6,97,99.8,100,100.4,100.2,102.4,103.8,105.2,111,115.6,118.8,120.8,125.2,126.4,123.4,121.2,116.6,113.2,110.2,107.8,104,102,101,103,105.8,107.8,107.4,106.8,107.6,107.6,106.2,106.4,105.4,105.4,105.8,104.2,103.8,104.2,103.6,102.8,103,102.4,103,102.8,103.4,103.6,103,101,101,101.2,101.2,101.4,101.8,100.2,98.8,100.4,100.4,97.2,95.8,93.6,94.6,95,93,95,98.8,101.2,99.6,100,99.4,96.6,97,97.8,98.2,96.8,98.2,99.2,95.2,92.4,89.6,87.2,87.4,88.2,88.6,89.8,90.8,91.2,91.6,91.4,91.6,93.8,93,90.2,90,93.2,93.2,93.6,96.8,96.8,93.8,94.2,96.4,98.2,98.6,100.4,104.4,103.8,101.6,99.4,99.8,99.8,99.6,99.4,98.8,98.8,98.4,99,100,101,103.2,105.8,107.8,109.6,110.4,109.2,106,104.8,103.4,102.6,99.8,98.2,97.2,97.8];
+
+// =========================================================
+// POWER CARDS
+// =========================================================
+const maxW = Math.max(...powerBests.map(d=>d.watts));
+const grid = document.getElementById('powerGrid');
+powerBests.forEach(d => {
+  const pct = (d.watts / maxW * 100).toFixed(0);
+  grid.innerHTML += `
+    <div class="power-card">
+      <div class="power-duration">${d.min} Minute${d.min>1?'s':''}</div>
+      <div class="power-watts">${d.watts}<span class="power-unit"> W</span></div>
+      <div class="power-bar-wrap">
+        <div class="power-bar-bg"><div class="power-bar-fill" style="width:0%" data-pct="${pct}%"></div></div>
+      </div>
+      <div class="power-hr">
+        <div class="hr-dot"></div>
+        <span class="power-hr-val">${d.hr} bpm</span>
+        <span class="power-hr-label" style="margin-left:4px">avg HR</span>
+      </div>
+    </div>`;
+});
+// Animate bars on load
+setTimeout(() => {
+  document.querySelectorAll('.power-bar-fill').forEach(el => {
+    el.style.width = el.dataset.pct;
+  });
+}, 300);
+
+// =========================================================
+// BAR CHART
+// =========================================================
+const bc = document.getElementById('barChart');
+powerBests.forEach(d => {
+  const h = Math.round((d.watts / maxW) * 160);
+  bc.innerHTML += `
+    <div class="bar-col">
+      <div class="bar-val">${d.watts}</div>
+      <div class="bar-body" style="height:0px" data-h="${h}px"></div>
+      <div class="bar-label">${d.min} min</div>
+    </div>`;
+});
+setTimeout(() => {
+  document.querySelectorAll('.bar-body').forEach(el => {
+    el.style.height = el.dataset.h;
+    el.style.transition = 'height 1.2s ease';
+  });
+}, 400);
+
+// =========================================================
+// ALTITUDE SVG
+// =========================================================
+const svg = document.getElementById('altitudeSvg');
+const W = 1120, H = 200;
+const minA = Math.min(...altitudes), maxA = Math.max(...altitudes);
+const n = altitudes.length;
+const pts = altitudes.map((a, i) => {
+  const x = (i / (n-1)) * W;
+  const y = H - ((a - minA) / (maxA - minA)) * (H - 30) - 10;
+  return `${x},${y}`;
+});
+const polyline = pts.join(' ');
+const area = `M0,${H} L` + pts.join(' L') + ` L${W},${H} Z`;
+svg.innerHTML = `
+  <defs>
+    <linearGradient id="altGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e8f045" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#e8f045" stop-opacity="0.02"/>
+    </linearGradient>
+  </defs>
+  <path d="${area}" fill="url(#altGrad)"/>
+  <polyline points="${polyline}" fill="none" stroke="#e8f045" stroke-width="2" stroke-linejoin="round"/>
+  <text x="8" y="18" fill="#6b7280" font-size="10" font-family="DM Mono,monospace">${maxA.toFixed(0)}m</text>
+  <text x="8" y="${H-4}" fill="#6b7280" font-size="10" font-family="DM Mono,monospace">${minA.toFixed(0)}m</text>`;
+
+// =========================================================
+// MAP
+// =========================================================
+const map = L.map('map', { zoomControl: true }).setView([53.55, -6.69], 11);
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+  attribution: '© CartoDB',
+  subdomains: 'abcd', maxZoom: 20
+}).addTo(map);
+
+const poly = L.polyline(coords, { color: '#e8f045', weight: 3, opacity: 0.9 }).addTo(map);
+map.fitBounds(poly.getBounds(), { padding: [40, 40] });
+
+// Start / End markers
+const startIcon = L.divIcon({ className: '', html: '<div style="width:12px;height:12px;border-radius:50%;background:#e8f045;border:2px solid #0a0c0f;"></div>', iconSize: [12,12], iconAnchor: [6,6] });
+const endIcon = L.divIcon({ className: '', html: '<div style="width:12px;height:12px;border-radius:50%;background:#f04560;border:2px solid #0a0c0f;"></div>', iconSize: [12,12], iconAnchor: [6,6] });
+L.marker(coords[0], { icon: startIcon }).addTo(map).bindPopup('<b>Start</b> — Dunshaughlin');
+L.marker(coords[coords.length-1], { icon: endIcon }).addTo(map).bindPopup('<b>Finish</b>');
+
+// Key POI markers
+const pois = [
+  { pos: [53.5545, -6.7908], label: 'Trim Castle' },
+  { pos: [53.5104, -6.6805], label: 'Dunsany' },
+  { pos: [53.6098, -6.8182], label: 'Summerhill' },
+];
+pois.forEach(p => {
+  L.marker(p.pos, { icon: L.divIcon({ className:'', html:`<div style="background:#111318;border:1px solid #e8f045;color:#e8f045;font-size:10px;padding:3px 6px;border-radius:2px;white-space:nowrap;font-family:DM Mono,monospace;">${p.label}</div>`, iconAnchor:[0,0] }) })
+    .addTo(map);
+});
+
+// =========================================================
+// SEGMENTS TABLE
+// =========================================================
+const tbody = document.getElementById('segmentsBody');
+segments.forEach(s => {
+  const mins = Math.floor(s.time/60), secs = s.time%60;
+  const timeStr = `${mins}:${secs.toString().padStart(2,'0')}`;
+  tbody.innerHTML += `<tr>
+    <td class="seg-name">${s.name}</td>
+    <td>${s.dist.toFixed(2)} km</td>
+    <td class="seg-time">${timeStr}</td>
+    <td class="seg-watts">${s.watts.toFixed(0)} W</td>
+    <td class="seg-hr">${s.hr.toFixed(0)} bpm</td>
+    <td>${s.elev > 0 ? s.elev.toFixed(0) + ' m' : '—'}</td>
+  </tr>`;
+});
+
+// =========================================================
+// BEST EFFORTS
+// =========================================================
+const eg = document.getElementById('effortsGrid');
+function fmtTime(s) {
+  const h = Math.floor(s/3600), m = Math.floor((s%3600)/60), sec = s%60;
+  if(h) return `${h}h ${m}m`;
+  return `${m}:${sec.toString().padStart(2,'0')}`;
+}
+bestEfforts.forEach(e => {
+  eg.innerHTML += `<div class="effort-card">
+    <div class="effort-dist">${e.label}</div>
+    <div class="effort-time">${fmtTime(e.secs)}</div>
+  </div>`;
+});
+</script>
+</body>
+</html>
